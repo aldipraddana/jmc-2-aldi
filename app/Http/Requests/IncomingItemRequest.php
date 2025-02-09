@@ -27,7 +27,7 @@ class IncomingItemRequest extends FormRequest
             'category' => 'required',
             'sub_category' => 'required',
             'item_source' => 'required',
-            'reverence_number' => 'nullable',
+            'reverence_number' => 'required',
             'item_name' => 'required|array',
             'item_name.*' => 'required|string',
             'price' => 'required|array',
