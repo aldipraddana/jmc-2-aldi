@@ -94,7 +94,7 @@ $('.js--form-user-management-edit').on('submit', function(e) {
     });
 });
 
-$('.js--edit-data-user-management-edit').on('click', function() {
+$('.js--edit-data-user-management').on('click', function() {
     let id = $(this).data('id');
     let role = $(this).attr('data-role');
     let username = $(this).attr('data-username');
