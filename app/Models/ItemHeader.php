@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ItemHeader extends Model
 {
@@ -19,5 +20,10 @@ class ItemHeader extends Model
         static::saving(function (self $value) {
             $value->updated_by = auth()->id();
         });
+    }
+
+    public function itemBody(): HasMany
+    {
+        return $this->hasMany(ItemBody::class, 'item_header_id');
     }
 }

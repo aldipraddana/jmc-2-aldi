@@ -1,14 +1,16 @@
 $(document).ready(function() {
-    $('.js--table-category').DataTable();
+    let userManagementDatatable = $('.js--table-category').DataTable();
     if ($('.dt-length').length) {
         $('.dt-length').remove();
     }
-    $('input[type="text"]').on('input', function() {
-        $(this).val($(this).val().toUpperCase());
+
+    $('.js--filter-role').on('change', function() {
+        let role = $(this).val();
+        userManagementDatatable.column(5).search(role).draw();
     });
 });
 
-$('.js--form-category').on('submit', function(e) {
+$('.js--form-user-management').on('submit', function(e) {
     e.preventDefault();
     $('.alert').hide();
 
@@ -50,32 +52,19 @@ $('.js--form-category').on('submit', function(e) {
     });
 });
 
-$('.js--edit-data-category').on('click', function() {
+$('.js--edit-data-user-management').on('click', function() {
     let id = $(this).data('id');
-    let categoryCode = $(this).attr('data-category_code');
+    let role = $(this).attr('data-role');
+    let username = $(this).attr('data-username');
+    let name = $(this).attr('data-name');
+    let email = $(this).attr('data-email');
     let url = $(this).attr('data-action');
-    console.log($(this).attr('data-category_code'));
     
-    let categoryName = $(this).attr('data-category_name');
-
-    $('#modal--edit-category').find('form').attr('action', url);
-    $('#modal--edit-category').find('input[name="id"]').val(id);
-    $('#modal--edit-category').find('input[name="category_code"]').val(categoryCode);
-    $('#modal--edit-category').find('input[name="category_name"]').val(categoryName);
+    $('.js--form-user-management').attr('action', url);
+    $('#modal--edit-user').find('input[name="id"]').val(id);
+    $('#modal--edit-user').find('select[name="role"]').val(role);
+    $('#modal--edit-user').find('input[name="username"]').val(username);
+    $('#modal--edit-user').find('input[name="name"]').val(name);
+    $('#modal--edit-user').find('input[name="email"]').val(email);
 });
 
-$('.js--edit-data-sub-category').on('click', function() {
-    let id = $(this).attr('data-id');
-    let category = $(this).attr('data-category');
-    let subCategoryName = $(this).attr('data-sub_category_name');
-    console.log(subCategoryName);
-    
-    let priceLimit = $(this).attr('data-price_limit');
-    let url = $(this).attr('data-action');
-
-    $('#modal--edit-category').find('form').attr('action', url);
-    $('#modal--edit-category').find('input[name="id"]').val(id);
-    $('#modal--edit-category').find('select[name="category_id"]').val(category);
-    $('#modal--edit-category').find('input[name="sub_category_name"]').val(subCategoryName);
-    $('#modal--edit-category').find('input[name="price_limit"]').val(formatCurrency(priceLimit));
-});

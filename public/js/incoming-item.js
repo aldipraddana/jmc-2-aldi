@@ -1,3 +1,47 @@
+function checkLimitHarga() {
+    let jsPriceLimit = $('.js--price-limit').val();
+    jsPriceLimit = jsPriceLimit.replace(/[^0-9]/g, '');
+    jsPriceLimit = Number(jsPriceLimit);
+
+    let price = 0;
+    $('.js--total-price').each((index, element) => {
+        let totalPrice = $(element).val();
+        totalPrice = totalPrice.replace(/[^0-9]/g, '');
+        price += Number(totalPrice);
+    });
+    console.log(price, jsPriceLimit);
+    
+    if (price > jsPriceLimit) {
+        alert('Total harga melebihi batas harga yang ditentukan, tidak dapat menyimpan data');
+        $('.js--submit-form').attr('disabled', true);
+        $($('.js--price')[$('.js--price').length-1]).val('');
+        $($('.js--quantity')[$('.js--quantity').length-1]).val('');
+        $($('.js--total-price')[$('.js--total-price').length-1]).val(0);
+    }else {
+        $('.js--submit-form').attr('disabled', false);
+    }
+}
+
+function initializeCounter() {
+    $('.js--price').on('input', function() {
+        let price = $(this).val();
+        price = price.replace(/[^0-9]/g, '');
+        let quantity = $(this).closest('tr').find('.js--quantity').val(); 
+        $(this).closest('tr').find('.js--total-price').val(formatCurrency(String(price * quantity))).trigger('input');
+
+        checkLimitHarga();
+    });
+    
+    $('.js--quantity').on('input', function() {
+        let quantity = $(this).val();
+        let price = $(this).closest('tr').find('.js--price').val();
+        price = price.replace(/[^0-9]/g, '');
+        $(this).closest('tr').find('.js--total-price').val(formatCurrency(String(price * quantity))).trigger('input');
+
+        checkLimitHarga();
+    });
+}
+
 $('.js--add-item').on('click', function() {
     console.log('add item');
     
@@ -15,4 +59,41 @@ $('.js--add-item').on('click', function() {
     $('.js--destroy-item').on('click', function() {
         $(this).closest('tr').remove();
     });
+
+    initializeCounter();
+
+    $('input[type="text"]').on('input', function() {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+
+$('select[name="category"]').on('change', function() {
+    let category = $(this).val();
+    let url = $(this).attr('data-url')+`${category}`;
+    let htmlOption = '<option value="">Pilih Sub Category</option>';
+    $('select[name="sub_category"]').html(`<option value="">Pilih Sub Category</option>`);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(data) {
+           data.forEach(element => {
+               htmlOption += `<option value="${element.id}" data-price_limit="${element.price_limit}">${element.sub_category_name}</option>`;
+           });
+           $('select[name="sub_category"]').html(htmlOption);
+        }
+    });
+});
+
+$('select[name="sub_category"]').on('change', function() {
+    let priceLimit = $(this).find(':selected').attr('data-price_limit');
+    priceLimit = Number(priceLimit);
+    $('.js--price-limit').val(formatCurrency(String(priceLimit)));
+    checkLimitHarga();
+});
+
+$(document).ready(function() {
+    $('input[type="text"]').on('input', function() {
+        $(this).val($(this).val().toUpperCase());
+    });
+    initializeCounter();
 });

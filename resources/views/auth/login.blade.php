@@ -13,11 +13,11 @@
             <p>Selamat datang, silakan masukan username dan password anda! </p>
         </div>
 
-        <!-- Email Address -->
+        <!-- Username -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="username" class="block mt-1 w-full" type="text" min="8" max="100" name="username" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Password -->
@@ -34,7 +34,7 @@
 
         <!-- Remember Me -->
         <div class="block mt-4 text-sm">
-            <i>*admin = aldi@aldi.com, password = Aldi1234</i>
+            <i>*username = admin, password = Aldi1234</i>
         </div>
 
         <div class="flex items-center justify-end mt-4">

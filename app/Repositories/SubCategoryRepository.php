@@ -31,4 +31,20 @@ class SubCategoryRepository
         $id = Crypt::decrypt($id);
         SubCategory::find($id)->delete();
     }
+
+    public function subCategoryByCategoryId($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data = SubCategory::select('id', 'sub_category_name', 'price_limit')
+        ->where('category_id', $id)->get();
+
+        $data = array_map(function($item) {
+            return [
+                'id' => Crypt::encrypt($item['id']),
+                'sub_category_name' => $item['sub_category_name'],
+                'price_limit' => $item['price_limit']
+            ];
+        }, $data->toArray());
+        return $data;
+    }
 }

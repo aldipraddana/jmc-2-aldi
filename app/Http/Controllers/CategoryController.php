@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Repositories\CategoryRepository;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {   
@@ -15,6 +16,10 @@ class CategoryController extends Controller
 
     public function index()
     {
+        if (Auth::user()->role == 'operator') {
+            return redirect()->route('incoming.items');
+        }
+
         return view('category/index', [
             'menu' => 'Kategori',
             'categories' => $this->categoryRepository->all(),

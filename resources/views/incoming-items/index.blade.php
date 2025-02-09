@@ -8,6 +8,17 @@
                 <b class="fs-5">INFORMASI UMUM</b>
             </div>
             <div class="card-body">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <form action="" method="POST">
                     @csrf
                     <div class="row">
@@ -15,39 +26,45 @@
                             <label for="" class="form-label">Operator</label>
                             <select name="operator" class="form-control" id="">
                                 <option value="">Pilih Operator</option>
+                                @foreach ($operator as $item)
+                                    <option value="{{ $item->id }}">{{ strtoupper($item->name) }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">
                             <label for="" class="form-label">Kategori</label>
-                            <select name="category" class="form-control" id="">
+                            <select name="category" class="form-control" id="" data-url="{{ route('sub-category') }}/category/">
                                 <option value="">Pilih Kategori</option>
+                                @foreach ($category as $item)
+                                    <option value="{{ Crypt::encrypt($item->id) }}">{{ $item->category_name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">
                             <label for="" class="form-label">Sub Kategori</label>
-                            <select name="category" class="form-control" id="">
+                            <select name="sub_category" class="form-control" id="">
                                 <option value="">Pilih Sub Kategori</option>
                             </select>
                         </div>
                         <div class="col-4">
                             <label for="" class="form-label">Batas Harga</label>
-                            <input type="text" class="form-control js--money" autocomplete="off" placeholder="Silakan input disini" name="price_limit" id="">
+                            <input type="text" class="form-control js--money js--price-limit" readonly autocomplete="off" id="">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-8">
                             <label for="" class="form-label">Asal Barang</label>
-                            <input type="text" name="item_source" class="form-control" autocomplete="off" placeholder="Silakan input disini" name="origin" id="">
+                            <input type="text" name="item_source" class="form-control" autocomplete="off" placeholder="Silakan input disini..." name="origin" id="">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">
                             <label for="" class="form-label">Nomor Surat</label>
-                            <input type="text" class="form-control" name="reverence_number" max="100">
+                            <input type="text" class="form-control" placeholder="Silakan input disini..." name="reverence_number" max="100">
                         </div>
                         <div class="col-4">
                             <label for="" class="form-label">Lampiran <small style="color: brown">*.doc,.docx,.zip</small></label>
@@ -76,21 +93,19 @@
                                         <tbody class="js--incoming-items">
                                             <tr>
                                                 <td>
-                                                    <input type="text" class="form-control" name="item_name" id="">
+                                                    <input type="text" class="form-control" name="item_name[]" placeholder="Silakan input disini..." id="">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control js--money" name="price" id="">
+                                                    <input type="text" class="form-control js--money js--price" placeholder="Silakan input disini..." name="price[]" id="">
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control" name="quantity" id="">
+                                                    <input type="number" class="form-control js--quantity" placeholder="Silakan input disini..." name="quantity[]" id="">
                                                 </td>
                                                 <td>
-                                                    <select name="unit" class="form-control" name="unit" id="">
-                                                        <option value="">Pilih Satuan</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" placeholder="Silakan input disini..." name="unit[]" id="">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control js--money" readonly name="total" id="">
+                                                    <input type="text" class="form-control js--total-price" readonly id="">
                                                 </td>
                                                 <td>
                                                     <input type="date" class="form-control" name="expired_date" id="">
@@ -108,7 +123,7 @@
                     <div class="row mt-4">
                         <div class="col-12">
                             <a href="" class="btn btn-default btn-outline-secondary">Kembali</a>
-                            <button type="submit" class="btn btn-primary" style="margin-left: 7px">Simpan</button>
+                            <button type="submit" class="btn btn-primary js--submit-form" disabled style="margin-left: 7px">Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -119,5 +134,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/incoming-item.js') }}"></script>
+    <script src="{{ asset('js/incoming-item.js?time='.time()) }}"></script>
 @endsection

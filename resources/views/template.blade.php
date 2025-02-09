@@ -33,6 +33,7 @@
                         <span>Barang Masuk</span>
                     </a>
                 </li>
+                @if (Auth::user()->role == 'admin')
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link {{ $menu == 'Kategori' || $menu == 'Sub Kategori'  ? '' : 'collapsed' }} has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#master-data" aria-expanded="false" aria-controls="master-data">
@@ -53,11 +54,12 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('user-management') }}" class="sidebar-link {{ $menu == 'User Manajemen' ? 'active' : '' }}">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Manajemen User</span>
                     </a>
                 </li>
+                @endif
             </ul>
             <div class="sidebar-footer">
                 <form action="{{ route('logout') }}" method="POST" class="js--logout d-none">
@@ -66,7 +68,7 @@
                 </form>
                 <a href="#" class="sidebar-link js--trigger-logout">
                     <i class="lni lni-exit"></i>
-                    <span>Logout</span>
+                    <span>Logout ({{ Auth::user()->username }})</span>
                 </a>
             </div>
         </aside>

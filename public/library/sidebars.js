@@ -24,8 +24,4 @@ $(document).ready(function () {
   formatNumberInput('.js--money');
   
   $('.toggle-btn').trigger('click');
-  
-  $('input[type="text"]').on('input', function() {
-    $(this).val($(this).val().toUpperCase());
-});
 });

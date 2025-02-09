@@ -45,6 +45,15 @@ class SubCategoryController extends Controller
         }
     }
 
+    public function subCategoryByCategoryId($categoryId) {
+        try {
+            $subCategories = $this->subCategoryRepository->subCategoryByCategoryId($categoryId);
+            return response()->json($subCategories);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function destroy($id)
     {
         try {
