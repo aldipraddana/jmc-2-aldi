@@ -1,16 +1,3 @@
-function formatNumberInput(inputSelector) {
-    $(inputSelector).on('input', function() {
-        let value = $(this).val();
-        let numericValue = value.replace(/[^0-9]/g, '');
-        let formattedValue = new Intl.NumberFormat('id-ID').format(numericValue);
-        $(this).val(formattedValue);
-    });
-}
-
-$(document).ready(function() {
-    formatNumberInput('.js--money');
-});
-
 $('.js--add-item').on('click', function() {
     console.log('add item');
     

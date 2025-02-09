@@ -11,6 +11,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css?time='.time()) }}">
     <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+    @yield('styles')
 </head>
 
 <body>
@@ -33,17 +34,21 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    <a href="#" class="sidebar-link {{ $menu == 'Kategori' || $menu == 'Sub Kategori'  ? '' : 'collapsed' }} has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#master-data" aria-expanded="false" aria-controls="master-data">
                         <i class="lni lni-dropbox"></i>
                         <span>Master Data</span>
                     </a>
-                    <ul id="master-data" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <ul id="master-data" class="sidebar-dropdown list-unstyled collapse {{ $menu == 'Kategori' || $menu == 'Sub Kategori'  ? 'show' : '' }}" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Kategori</a>
+                            <a href="{{ route('category') }}" class="sidebar-link {{ $menu == 'Kategori' ? 'active' : '' }}">
+                                <span>Kategori</span>
+                            </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Sub Kategori</a>
+                            <a href="{{ route('sub-category') }}" class="sidebar-link {{ $menu == 'Sub Kategori' ? 'active' : '' }}">
+                                <span>Sub Kategori</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
