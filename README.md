@@ -18,3 +18,4 @@ DB_PASSWORD=
 6. php artisan db:seed
 7. npm install
 8. npm run build
+9. mohon komputer terhubung dengan internet, karena terdapat font dan icon yang menggunakan cdn
