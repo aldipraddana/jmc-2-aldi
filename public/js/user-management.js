@@ -52,6 +52,48 @@ $('.js--form-user-management').on('submit', function(e) {
     });
 });
 
+$('.js--form-user-management-edit').on('submit', function(e) {
+    e.preventDefault();
+    $('.alert').hide();
+
+    let form = $(this);
+    let url = form.attr('action');
+    let method = form.attr('method');
+    let data = form.serialize();
+
+    $.ajax({
+        url: url,
+        method: method,
+        data: data,
+        befofeSend: function() {
+            form.find('button[type="submit"]').prop('disabled', true).text('Loading...');
+        },
+        success: function(response) {
+            $('.alert-success').html(response.message).show();
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+            form.find('button[type="submit"]').prop('disabled', false).text('Submit');
+        },
+        error: function(error) {
+            console.log(error);
+            form.find('button[type="submit"]').prop('disabled', false).text('Submit');
+            if (error.responseJSON === undefined) {
+                $('.alert-danger').html(error.responseText).show();
+                return;
+            }
+            const errorsArray = $.map(error.responseJSON.errors, function(value) {
+                return value;
+            });
+            let htmlError = '';
+            errorsArray.forEach((error) => {
+                htmlError += `<p class="mb-1">*${error}</p>`;
+            });
+            $('.alert-danger').html(htmlError).show();
+        }
+    });
+});
+
 $('.js--edit-data-user-management').on('click', function() {
     let id = $(this).data('id');
     let role = $(this).attr('data-role');

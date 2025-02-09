@@ -9,7 +9,6 @@ function checkLimitHarga() {
         totalPrice = totalPrice.replace(/[^0-9]/g, '');
         price += Number(totalPrice);
     });
-    console.log(price, jsPriceLimit);
     
     if (price > jsPriceLimit) {
         alert('Total harga melebihi batas harga yang ditentukan, tidak dapat menyimpan data');
@@ -96,4 +95,56 @@ $(document).ready(function() {
         $(this).val($(this).val().toUpperCase());
     });
     initializeCounter();
+    
+    let datatableIncomingItem = $('.js--table-incoming-item').DataTable();
+    if ($('.dt-length').length) {
+        $('.dt-length').remove();
+    }
+
+    $('.js--filter-category').on('change', function() {
+        let val = $(this).val();
+        datatableIncomingItem.column(12).search(val).draw();
+    });
+});
+
+$('.js--form-submit').on('submit', function(e) {
+    e.preventDefault();
+    $('.alert').hide();
+
+    let form = $(this);
+    let url = form.attr('action');
+    let method = form.attr('method');
+    let data = form.serialize();
+
+    $.ajax({
+        url: url,
+        method: method,
+        data: data,
+        befofeSend: function() {
+            form.find('button[type="submit"]').prop('disabled', true).text('Loading...');
+        },
+        success: function(response) {
+            $('.alert-success').html(response.message).show();
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+            form.find('button[type="submit"]').prop('disabled', false).text('Submit');
+        },
+        error: function(error) {
+            console.log(error);
+            form.find('button[type="submit"]').prop('disabled', false).text('Submit');
+            if (error.responseJSON === undefined) {
+                $('.alert-danger').html(error.responseText).show();
+                return;
+            }
+            const errorsArray = $.map(error.responseJSON.errors, function(value) {
+                return value;
+            });
+            let htmlError = '';
+            errorsArray.forEach((error) => {
+                htmlError += `<p class="mb-1">*${error}</p>`;
+            });
+            $('.alert-danger').html(htmlError).show();
+        }
+    });
 });

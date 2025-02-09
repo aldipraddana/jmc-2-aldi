@@ -32,6 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/incoming-items', [IncomingItemController::class, 'index'])->name('incoming.items');
+    Route::get('/incoming-items/create', [IncomingItemController::class, 'create'])->name('incoming.items.create');
+    Route::get('/incoming-items/pdf/{headerId}', [IncomingItemController::class, 'pdf'])->name('incoming.items.pdf');
+    Route::post('/incoming-items', [IncomingItemController::class, 'store'])->name('incoming.items.store');
+    Route::delete('/incoming-items/{id}', [IncomingItemController::class, 'destroy'])->name('incoming.items.destroy');
+    Route::put('/incoming-items/update-status/{id}', [IncomingItemController::class, 'updateStatusItem'])->name('incoming.items.update.status');
 
     Route::get('/category', [CategoryController::class, 'index'])->name('category');
     Route::post('/category', [CategoryController::class, 'store'])->name('category.store');

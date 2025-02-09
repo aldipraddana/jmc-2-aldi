@@ -24,7 +24,11 @@ class UserManagementRequest extends FormRequest
      */
     public function rules(): array
     {   
-        $id = Crypt::decrypt($this->route('id'));
+        if ($this->isMethod('post')) {
+            $id = '';
+        }else {
+            $id = Crypt::decrypt($this->route('id'));
+        }
         $rule = [
             'username' => [
                 'required',
@@ -38,7 +42,7 @@ class UserManagementRequest extends FormRequest
             'role' => 'required|in:admin,operator',
         ];
         if ($this->isMethod('post')) {
-            $rules['password'] = 'required|string|min:8|max:100|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
+            $rule['password'] = 'required|string|min:8|max:100|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
         }
         return $rule;
     }

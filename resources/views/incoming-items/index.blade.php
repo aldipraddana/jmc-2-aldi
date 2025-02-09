@@ -1,11 +1,15 @@
 @extends('template')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('library/dataTables.css') }}">
+@endsection
+
 @section('section')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <b class="fs-5">INFORMASI UMUM</b>
+                <b class="fs-5">BARANG MASUK</b>
             </div>
             <div class="card-body">
                 @if (session('success'))
@@ -19,120 +23,123 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                <form action="" method="POST">
-                    @csrf
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="" class="form-label">Operator</label>
-                            <select name="operator" class="form-control" id="">
-                                <option value="">Pilih Operator</option>
-                                @foreach ($operator as $item)
-                                    <option value="{{ $item->id }}">{{ strtoupper($item->name) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                @csrf
+                <div class="table-responsive">
+                    <div style="position: absolute;z-index:99;margin-top:11px;display: flex;">
+                        <a href="{{ route('incoming.items.create') }}" class="btn btn-primary">Tambah Data</a>
+                        <select name="" class="form-control js--filter-category" id="" style="width: 250px;margin-left:10px">
+                            <option value="">Semua Kategori</option>
+                            @foreach ($category as $item)
+                                <option value="{{ $item->category_name }}">{{ $item->category_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-4">
-                            <label for="" class="form-label">Kategori</label>
-                            <select name="category" class="form-control" id="" data-url="{{ route('sub-category') }}/category/">
-                                <option value="">Pilih Kategori</option>
-                                @foreach ($category as $item)
-                                    <option value="{{ Crypt::encrypt($item->id) }}">{{ $item->category_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4">
-                            <label for="" class="form-label">Sub Kategori</label>
-                            <select name="sub_category" class="form-control" id="">
-                                <option value="">Pilih Sub Kategori</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <label for="" class="form-label">Batas Harga</label>
-                            <input type="text" class="form-control js--money js--price-limit" readonly autocomplete="off" id="">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-8">
-                            <label for="" class="form-label">Asal Barang</label>
-                            <input type="text" name="item_source" class="form-control" autocomplete="off" placeholder="Silakan input disini..." name="origin" id="">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4">
-                            <label for="" class="form-label">Nomor Surat</label>
-                            <input type="text" class="form-control" placeholder="Silakan input disini..." name="reverence_number" max="100">
-                        </div>
-                        <div class="col-4">
-                            <label for="" class="form-label">Lampiran <small style="color: brown">*.doc,.docx,.zip</small></label>
-                            <input type="file" class="form-control" name="attachment" id="" accept=".doc,.docx,.zip">
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <b class="fs-5">INFORMASI BARANG</b>
-                                </div>
-                                <div class="card-body">
-                                    <table style="width: 100%">
-                                        <thead>
-                                            <tr>
-                                                <td>Nama Barang</td>
-                                                <td style="width: 15%">Harga (Rp.)</td>
-                                                <td style="width: 10%">Jumlah</td>
-                                                <td>Satuan</td>
-                                                <td style="width: 15%">Total</td>
-                                                <td>Tgl. Expired</td>
-                                                <td></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="js--incoming-items">
-                                            <tr>
-                                                <td>
-                                                    <input type="text" class="form-control" name="item_name[]" placeholder="Silakan input disini..." id="">
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control js--money js--price" placeholder="Silakan input disini..." name="price[]" id="">
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control js--quantity" placeholder="Silakan input disini..." name="quantity[]" id="">
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" placeholder="Silakan input disini..." name="unit[]" id="">
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control js--total-price" readonly id="">
-                                                </td>
-                                                <td>
-                                                    <input type="date" class="form-control" name="expired_date" id="">
-                                                </td>
-                                                <td class="text-center js--incoming-items-action">
-                                                    <button type="button" class="btn btn-outline-secondary js--add-item" style="padding-bottom: 0"><i class="lni lni-plus" style="font-size: 21px;"></i></button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <a href="" class="btn btn-default btn-outline-secondary">Kembali</a>
-                            <button type="submit" class="btn btn-primary js--submit-form" disabled style="margin-left: 7px">Simpan</button>
-                        </div>
-                    </div>
-                </form>
+                    <table class="js--table-incoming-item table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Action</th>
+                                <th>Tanggal</th>
+                                <th>Asal Barang</th>
+                                <th>Penerima</th>
+                                <th>Unit</th>
+                                <th>Kode</th>
+                                <th>Nama</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th style="display: none">Kategori</th>
+                                <th style="display: none">Sub Kategori</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $no = 1;
+                                $previousItemId = null;
+                            @endphp
+                            @foreach ($incomingItems as $item)
+                               <tr>
+                                    <td class="text-center">
+                                        @if ($loop->iteration == 1 || $item->item_header_id != $previousItemId)
+                                            {{ $no++ }}
+                                        @else
+                                           <span style="color: transparent"> {{ $no }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($loop->iteration == 1 || $item->item_header_id != $previousItemId)
+                                            <div style="display: flex;justify-content: center;">
+                                                @if ($item->itemHeader->created_by == Auth::user()->id)
+                                                <div>
+                                                    <a href="" class="btn btn-primary">Edit</a>
+                                                </div>
+                                                <div style="margin-left: 5px;">
+                                                    <form action="{{ route('incoming.items.destroy', Crypt::encrypt($item->id)) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                                @endif
+                                                <div style="margin-left: 5px;">
+                                                    <a href="{{ route('incoming.items.pdf', Crypt::encrypt($item->item_header_id)) }}" target="_blank" class="btn btn-success">Print</a>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($loop->iteration == 1 || $item->item_header_id != $previousItemId)
+                                            {{ $item->itemHeader->created_at }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($loop->iteration == 1 || $item->item_header_id != $previousItemId)
+                                            {{ $item->itemHeader->item_source }}
+                                        @else
+                                            <span style="color: transparent">{{ $item->itemHeader->item_source }}</span>
+                                         @endif
+                                    </td>
+                                    <td>
+                                        @if ($loop->iteration == 1 || $item->item_header_id != $previousItemId)
+                                            {{ strtoupper($item->itemHeader->createdBy->name) }}
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->unit }}</td>
+                                    <td>{{ $item->itemHeader->category->category_code.str_pad($item->id, 5, '0', STR_PAD_LEFT); }}</td>
+                                    <td>{{ $item->item_name }}</td>
+                                    <td>{{ number_format($item->price) }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ number_format($item->price*$item->quantity) }}</td>
+                                    <td>
+                                        @if (Auth::user()->role == 'admin' && $item->status == 'pending')
+                                            <form action="{{ route('incoming.items.update.status', Crypt::encrypt($item->id)) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin memverifikasi data ini?');">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success">Approve</button>
+                                            </form>
+                                        @else
+                                            <b>{{ strtoupper($item->status) }}</b>
+                                        @endif
+                                    </td>
+                                    <td style="display: none">{{ $item->itemHeader->category->category_name }}</td>
+                                    <td style="display: none">{{ $item->itemHeader->sub_category_id }}</td>
+                               </tr>
+                               @php
+                                   $previousItemId = $item->item_header_id;
+                               @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('library/dataTables.js') }}"></script>
     <script src="{{ asset('js/incoming-item.js?time='.time()) }}"></script>
-@endsection
+@endsection 
