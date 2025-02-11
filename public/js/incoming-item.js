@@ -96,14 +96,20 @@ $(document).ready(function() {
     });
     initializeCounter();
     
-    let datatableIncomingItem = $('.js--table-incoming-item').DataTable();
-    if ($('.dt-length').length) {
-        $('.dt-length').remove();
+    if ( $('.js--table-incoming-item').html() != undefined) {
+        let datatableIncomingItem = $('.js--table-incoming-item').DataTable();
+        if ($('.dt-length').length) {
+            $('.dt-length').remove();
+        }
+    
+        $('.js--filter-category').on('change', function() {
+            let val = $(this).val();
+            datatableIncomingItem.column(12).search(val).draw();
+        });
     }
 
-    $('.js--filter-category').on('change', function() {
-        let val = $(this).val();
-        datatableIncomingItem.column(12).search(val).draw();
+    $('.js--destroy-item').on('click', function() {
+        $(this).closest('tr').remove();
     });
 });
 
@@ -114,12 +120,14 @@ $('.js--form-submit').on('submit', function(e) {
     let form = $(this);
     let url = form.attr('action');
     let method = form.attr('method');
-    let data = form.serialize();
+    let data = new FormData(form[0]);
 
     $.ajax({
         url: url,
         method: method,
         data: data,
+        contentType: false,
+        processData: false,
         befofeSend: function() {
             form.find('button[type="submit"]').prop('disabled', true).text('Loading...');
         },

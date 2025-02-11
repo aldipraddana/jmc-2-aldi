@@ -45,6 +45,7 @@ class IncomingItemController extends Controller
             'menu' => 'Edit Barang Masuk',
             'operator' => $this->userRepository->operator(),
             'category' => $this->categoryRepository->all(),
+            'data' => $this->incomingItemRepository->find($id)->toArray(),
         ]);
     }
 
@@ -53,6 +54,16 @@ class IncomingItemController extends Controller
         try {
             $this->incomingItemRepository->create($request->validated());
             return response()->json(['message' => 'Barang berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function update(IncomingItemRequest $request)
+    {
+        try {
+            $this->incomingItemRepository->update($request->validated());
+            return response()->json(['message' => 'Barang berhasil diubah']);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

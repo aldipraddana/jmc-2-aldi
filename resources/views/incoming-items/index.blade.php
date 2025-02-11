@@ -72,7 +72,7 @@
                                             <div style="display: flex;justify-content: center;">
                                                 @if ($item->itemHeader->created_by == Auth::user()->id)
                                                 <div>
-                                                    <a href="" class="btn btn-primary">Edit</a>
+                                                    <a href="{{ route('incoming.items.edit', Crypt::encrypt($item->item_header_id)) }}" class="btn btn-primary">Edit</a>
                                                 </div>
                                                 <div style="margin-left: 5px;">
                                                     <form action="{{ route('incoming.items.destroy', Crypt::encrypt($item->item_header_id)) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" method="POST">

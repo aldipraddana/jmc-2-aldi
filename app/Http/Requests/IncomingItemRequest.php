@@ -28,6 +28,7 @@ class IncomingItemRequest extends FormRequest
             'sub_category' => 'required',
             'item_source' => 'required',
             'reverence_number' => 'required',
+            'attachment' => 'nullable|file|mimes:doc,docx,zip',
             'item_name' => 'required|array',
             'item_name.*' => 'required|string',
             'price' => 'required|array',
