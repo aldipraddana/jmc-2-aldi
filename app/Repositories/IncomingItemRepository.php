@@ -23,6 +23,7 @@ class IncomingItemRepository
             /**
              * upload file
              */
+            $filePath = null;
             if (request()->hasFile('attachment')) {
                 Storage::makeDirectory('public/attachments');
                 $filename = request()->file('attachment')->getClientOriginalName();
