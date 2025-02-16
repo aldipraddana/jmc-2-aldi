@@ -149,9 +149,13 @@ $('.js--form-submit').on('submit', function(e) {
                 return value;
             });
             let htmlError = '';
-            errorsArray.forEach((error) => {
-                htmlError += `<p class="mb-1">*${error}</p>`;
-            });
+            if (errorsArray.length > 1) {
+                errorsArray.forEach((error) => {
+                    htmlError += `<p class="mb-1">*${error}</p>`;
+                });
+            }else{
+                htmlError = `<p class="mb-1">*${error.responseJSON.message}</p>`;
+            }
             $('.alert-danger').html(htmlError).show();
         }
     });
