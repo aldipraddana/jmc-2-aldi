@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/incoming-items', [IncomingItemController::class, 'index'])->name('incoming.items');
     Route::get('/incoming-items/create', [IncomingItemController::class, 'create'])->name('incoming.items.create');
     Route::get('/incoming-items/edit/{headerId}', [IncomingItemController::class, 'edit'])->name('incoming.items.edit');
+    Route::get('incoming-items/file/{fileName}', [IncomingItemController::class, 'showFile'])->name('incoming-items.file');
     Route::get('/incoming-items/pdf/{headerId}', [IncomingItemController::class, 'pdf'])->name('incoming.items.pdf');
     Route::post('/incoming-items', [IncomingItemController::class, 'store'])->name('incoming.items.store');
     Route::put('/incoming-items', [IncomingItemController::class, 'update'])->name('incoming.items.update');

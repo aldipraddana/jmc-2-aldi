@@ -94,4 +94,9 @@ class IncomingItemController extends Controller
         $pdf = Pdf::loadView('incoming-items/pdf', ['data' => $data]);
         return $pdf->stream('laporan-barang-masuk.pdf');
     }
+
+    public function showFile($fileName) {
+        $file = storage_path('app/attachments/'.$fileName);
+        return response()->file($file);
+    }
 }

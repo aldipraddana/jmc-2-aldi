@@ -140,15 +140,12 @@
                             <input type="text" class="form-control" placeholder="Silakan input disini..." name="reverence_number" max="100" value="{{ $data['reference_number'] }}">
                         </div>
                         <div class="col-4">
-                            <label for="" class="form-label">Lampiran <small style="color: brown">*.doc,.docx,.zip</small></label>
-                            <input type="file" class="form-control" name="attachment" id="" accept=".doc,.docx,.zip">
+                            <label for="" class="form-label">Lampiran <small style="color: brown">*.doc,.docx,.zip, .png, .jpg</small></label>
+                            <input type="file" class="form-control" name="attachment" id="" accept=".doc,.docx,.zip, .png, .jpg">
                         </div>
                         <div class="col-4">
                             <label for="">Uploaded File</label><br>
-                            @php
-                                $link = str_replace('public', 'storage', $data['attachment']);
-                            @endphp
-                            <a href="{{ asset($link) }}" target="_blank">{{ $link}}</a>
+                            <a href="{{ route('incoming-items.file', $data['attachment']) }}" target="_blank">{{ $data['attachment'] }}</a>
                         </div>
                     </div>
                     <div class="row mt-4">

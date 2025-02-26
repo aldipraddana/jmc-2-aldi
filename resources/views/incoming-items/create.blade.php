@@ -64,8 +64,8 @@
                             <input type="text" class="form-control" placeholder="Silakan input disini..." name="reverence_number" max="100">
                         </div>
                         <div class="col-4">
-                            <label for="" class="form-label">Lampiran <small style="color: brown">*.doc,.docx,.zip</small></label>
-                            <input type="file" class="form-control" name="attachment" id="" accept=".doc,.docx,.zip">
+                            <label for="" class="form-label">Lampiran <small style="color: brown">*.doc,.docx,.zip, .png, .jpg</small></label>
+                            <input type="file" class="form-control" name="attachment" id="" accept=".doc,.docx,.zip, .png, .jpg">
                         </div>
                     </div>
                     <div class="row mt-4">

@@ -5,6 +5,7 @@ use App\Models\ItemBody;
 use App\Models\ItemHeader;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class IncomingItemRepository
@@ -25,9 +26,10 @@ class IncomingItemRepository
              */
             $filePath = null;
             if (request()->hasFile('attachment')) {
-                Storage::makeDirectory('public/attachments');
-                $filename = request()->file('attachment')->getClientOriginalName();
-                $filePath = request()->file('attachment')->storeAs('public/attachments', $filename);
+                $file = request()->file('attachment');
+                $filename = time().'.'.request()->file('attachment')->getClientOriginalExtension();
+                Storage::disk('local')->put('/attachments/'.$filename, File::get($file));
+                $filePath = $filename;
             }
 
             /**
@@ -73,10 +75,11 @@ class IncomingItemRepository
             $originalData = ItemHeader::find($headerId);
             $filePath = $originalData->attachment;
             if (request()->hasFile('attachment')) {
-                Storage::delete($originalData->attachment);
-                Storage::makeDirectory('public/attachments');
-                $filename = request()->file('attachment')->getClientOriginalName();
-                $filePath = request()->file('attachment')->storeAs('public/attachments', $filename);
+                Storage::delete('/attachments/'.$originalData->attachment);
+                $file = request()->file('attachment');
+                $filename = time().'.'.request()->file('attachment')->getClientOriginalExtension();
+                Storage::disk('local')->put('/attachments/'.$filename, File::get($file));
+                $filePath = $filename;
             }
 
             /**
