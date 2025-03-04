@@ -40,7 +40,7 @@
                         <i class="lni lni-dropbox"></i>
                         <span>Master Data</span>
                     </a>
-                    <ul id="master-data" class="sidebar-dropdown list-unstyled collapse {{ $menu == 'Kategori' || $menu == 'Sub Kategori'  ? 'show' : '' }}" data-bs-parent="#sidebar">
+                    <ul id="master-data" class="sidebar-dropdown collapse {{ $menu == 'Kategori' || $menu == 'Sub Kategori'  ? 'show' : '' }}" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
                             <a href="{{ route('category') }}" class="sidebar-link {{ $menu == 'Kategori' ? 'active' : '' }}">
                                 <span>Kategori</span>

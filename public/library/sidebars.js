@@ -1,7 +1,14 @@
 const hamBurger = document.querySelector(".toggle-btn");
+const sidebar = $('#sidebar');
+const main = $('.main');
 
 hamBurger.addEventListener("click", function () {
   document.querySelector("#sidebar").classList.toggle("expand");
+  if ($('#sidebar').hasClass('expand')) {
+      main.css('margin-left', '260px');
+  } else {
+      main.css('margin-left', '70px');
+  }
 });
 
 $('.js--trigger-logout').on('click', function () {
