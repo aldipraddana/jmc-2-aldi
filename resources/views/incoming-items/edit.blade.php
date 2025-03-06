@@ -145,7 +145,9 @@
                         </div>
                         <div class="col-4">
                             <label for="">Uploaded File</label><br>
-                            <a href="{{ route('incoming-items.file', $data['attachment']) }}" target="_blank">{{ $data['attachment'] }}</a>
+                            @if (!empty($data['attachment']))
+                                <a href="{{ route('incoming-items.file', $data['attachment']) }}" target="_blank">{{ $data['attachment'] }}</a>
+                            @endif
                         </div>
                     </div>
                     <div class="row mt-4">
